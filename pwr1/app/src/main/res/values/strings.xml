@@ -3,6 +3,7 @@
     <string name="count_bmi">Count BMI</string>
     <string name="empty_value">0.00</string>
     <string name="height_is_empty">Please provide value.</string>
+    <string name="mass_is_empty">Please provide value.</string>
     <string name="height_cm">Height [cm]:</string>
     <string name="app_name">BMI App</string>
 </resources>
