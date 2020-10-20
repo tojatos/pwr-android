@@ -9,4 +9,6 @@
     <string name="height_in">Height [in]:</string>
     <string name="app_name">BMI App</string>
     <string name="change_bmi_format">Change BMI format</string>
+    <string name="bmi_details_title">BMI result</string>
+    <string name="bmi_details_description">You are strong! Keep up!</string>
 </resources>

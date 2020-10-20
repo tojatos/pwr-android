@@ -1,5 +1,6 @@
 package pl.krzysztofruczkowski.pwr1
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,15 +11,17 @@ import android.view.View
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
+    companion object {
+        const val EUROPEAN_FORMAT_KEY = "EUROPEAN_FORMAT"
+        const val HEIGHT_KEY = "HEIGHT"
+        const val MASS_KEY = "MASS"
+        const val BMI_KEY = "BMI"
+    }
     private lateinit var binding: ActivityMainBinding
     private var europeanFormat = true
     private var height: Double = 0.0
     private var mass: Double = 0.0
-
-    private val EUROPEAN_FORMAT_KEY = "EUROPEAN_FORMAT"
-    private val HEIGHT_KEY = "HEIGHT"
-    private val MASS_KEY = "MASS"
+    private var bmi: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,25 +76,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateBmi() {
         binding.apply {
-            val resultBmi = if (europeanFormat) BmiForCmKg(mass, height).count() else BmiForInLb(mass, height).count()
+            bmi = if (europeanFormat) BmiForCmKg(mass, height).count() else BmiForInLb(mass, height).count()
 
-            bmiTV.text = resultBmi.toString()
-            bmiTV.setTextColor(getBmiColor(resultBmi))
+            bmiTV.text = bmi.toString()
+            bmiTV.setTextColor(getBmiColor(bmi))
         }
     }
     private fun getDataFromTextFields() {
         binding.apply {
             if (massET.text.isBlank()) {
                 massET.error = getString(R.string.mass_is_empty)
+                return
             }
 
             if (heightET.text.isBlank()) {
                 heightET.error = getString(R.string.height_is_empty)
+                return
             }
 
             mass = massET.text.toString().toDouble()
             height = heightET.text.toString().toDouble()
-
         }
     }
 
@@ -111,5 +115,12 @@ class MainActivity : AppCompatActivity() {
         europeanFormat = !europeanFormat
         updateBmiFormat()
         updateBmi()
+    }
+
+    fun showBmiDetails(view: View) {
+        val intent = Intent(this, BmiDetailsActivity::class.java).apply {
+            putExtra(BMI_KEY, bmi)
+        }
+        startActivity(intent)
     }
 }
