@@ -13,6 +13,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var europeanFormat = true
+    private var height: Double = 0.0
+    private var mass: Double = 0.0
+
+    private val EUROPEAN_FORMAT_KEY = "EUROPEAN_FORMAT"
+    private val HEIGHT_KEY = "HEIGHT"
+    private val MASS_KEY = "MASS"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +28,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putBoolean(EUROPEAN_FORMAT_KEY, europeanFormat)
+            putDouble(HEIGHT_KEY, height)
+            putDouble(MASS_KEY, mass)
+        }
         super.onSaveInstanceState(outState)
-        //TODO oprogramowac zapamietywanie stanu ui (tam gdzie potrzeba)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        europeanFormat = savedInstanceState.getBoolean(EUROPEAN_FORMAT_KEY)
+        height = savedInstanceState.getDouble(HEIGHT_KEY)
+        mass = savedInstanceState.getDouble(MASS_KEY)
+
+        updateBmiFormat()
+        updateBmi()
         super.onRestoreInstanceState(savedInstanceState)
-        //TODO odt. stanu
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -52,38 +67,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun count(view: View) {
+        getDataFromTextFields()
         updateBmi()
     }
 
-    fun updateBmi() {
+    private fun updateBmi() {
         binding.apply {
-
-            var error = false
-
-            if (massET.text.isBlank()) {
-                massET.error = getString(R.string.mass_is_empty)
-                error = true
-            }
-
-            if (heightET.text.isBlank()) {
-                heightET.error = getString(R.string.height_is_empty)
-                error = true
-            }
-
-            if(error) return
-
-            val mass = massET.text.toString().toDouble()
-            val height = heightET.text.toString().toDouble()
-
             val resultBmi = if (europeanFormat) BmiForCmKg(mass, height).count() else BmiForInLb(mass, height).count()
 
             bmiTV.text = resultBmi.toString()
             bmiTV.setTextColor(getBmiColor(resultBmi))
         }
     }
+    private fun getDataFromTextFields() {
+        binding.apply {
+            if (massET.text.isBlank()) {
+                massET.error = getString(R.string.mass_is_empty)
+            }
 
-    fun changeBmiFormat(item: MenuItem) {
-        europeanFormat = !europeanFormat
+            if (heightET.text.isBlank()) {
+                heightET.error = getString(R.string.height_is_empty)
+            }
+
+            mass = massET.text.toString().toDouble()
+            height = heightET.text.toString().toDouble()
+
+        }
+    }
+
+    private fun updateBmiFormat() {
         binding.apply {
             if(europeanFormat) {
                 heightTV.text = getString(R.string.height_cm)
@@ -93,6 +105,11 @@ class MainActivity : AppCompatActivity() {
                 massTV.text = getString(R.string.mass_lb)
             }
         }
+    }
+
+    fun changeBmiFormat(item: MenuItem) {
+        europeanFormat = !europeanFormat
+        updateBmiFormat()
         updateBmi()
     }
 }

@@ -5,5 +5,5 @@ class BmiForInLb(
     private val height: Double
 ) : Bmi {
     override fun count(): Double =
-        mass / (height * height) * 703
+        if(height == 0.0) 0.0 else mass / (height * height) * 703
 }

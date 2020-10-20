@@ -5,5 +5,5 @@ class BmiForCmKg(
     private val height: Double
 ) : Bmi {
     override fun count(): Double =
-        mass / (height * height / 10000)
+        if(height == 0.0) 0.0 else mass / (height * height / 10000)
 }
