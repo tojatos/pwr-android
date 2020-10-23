@@ -121,6 +121,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, BmiDetailsActivity::class.java).apply {
             putExtra(BMI_KEY, bmi)
         }
-        startActivity(intent)
+        startActivityForResult(intent, 0)
     }
 }
