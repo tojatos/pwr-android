@@ -3,6 +3,7 @@ package pl.krzysztofruczkowski.pwr1
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityBmiDetailsBinding
+import java.text.DecimalFormat
 
 class BmiDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBmiDetailsBinding
@@ -26,7 +27,7 @@ class BmiDetailsActivity : AppCompatActivity() {
 
         binding.apply {
             val bmi = intent.getDoubleExtra(MainActivity.BMI_KEY, 0.0)
-            bmiTV.text = bmi.toString()
+            bmiTV.text = DecimalFormat("#.##").format(bmi)
             descriptionTV.text = getBmiDescription(bmi)
         }
     }

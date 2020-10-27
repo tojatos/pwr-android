@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
+import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             bmi = if (europeanFormat) BmiForCmKg(mass, height).count() else BmiForInLb(mass, height).count()
 
-            bmiTV.text = bmi.toString()
+            bmiTV.text = DecimalFormat("#.##").format(bmi)
             bmiTV.setTextColor(getBmiColor(bmi))
         }
     }
