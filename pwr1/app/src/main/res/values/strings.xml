@@ -14,4 +14,7 @@
     <string name="show_records">Show records</string>
     <string name="records_file_key">pl.krzysztofruczkowski.pwr1.records</string>
     <string name="saved_records_key">saved_records</string>
+    <string name="bmi_history">BMI History</string>
+    <string name="bmi">BMI</string>
+    <string name="date">Date</string>
 </resources>

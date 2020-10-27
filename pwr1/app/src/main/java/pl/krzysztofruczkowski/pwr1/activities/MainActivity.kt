@@ -3,12 +3,12 @@ package pl.krzysztofruczkowski.pwr1.activities
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -18,7 +18,9 @@ import pl.krzysztofruczkowski.pwr1.R
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
 import pl.krzysztofruczkowski.pwr1.models.Record
 import java.text.DecimalFormat
+import java.text.Format
 import java.util.Date
+import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun getBmiColor(bmi : Double) : Int {
+    private fun getBmiColor(bmi: Double) : Int {
         val colorString = when {
             bmi < 16 -> "#082E79"
             bmi < 16.99 -> "#4169E1"
@@ -137,12 +139,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveBmiRecord(bmi: Double) {
-        val sharedPref = getSharedPreferences(getString(R.string.records_file_key), Context.MODE_PRIVATE) ?: return
+        val sharedPref = getSharedPreferences(
+            getString(R.string.records_file_key),
+            Context.MODE_PRIVATE
+        ) ?: return
         val recordsString = sharedPref.getString(getString(R.string.saved_records_key), "[]").toString()
         val records = Json.decodeFromString<List<Record>>(recordsString)
-        val newRecord = Record(bmi, Date().toString())
+        val formatter: Format = SimpleDateFormat("yyyy-MM-dd")
+        val newRecord = Record(bmi, formatter.format(Date()))
         val newRecordsList = (if (records.size < 10) records else records.drop(1)) + newRecord
-        with (sharedPref.edit()) {
+        with(sharedPref.edit()) {
             putString(getString(R.string.saved_records_key), Json.encodeToString(newRecordsList))
             apply()
         }
