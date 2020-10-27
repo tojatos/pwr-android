@@ -3,9 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
-    <item android:id="@+id/action_servers"
+    <item android:id="@+id/bmi_format"
         android:title="@string/change_bmi_format"
         android:onClick="changeBmiFormat"
+        />
+
+    <item android:id="@+id/show_records"
+        android:title="@string/show_records"
+        android:onClick="showRecords"
         />
 
 </menu>

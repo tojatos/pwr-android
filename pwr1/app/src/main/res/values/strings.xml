@@ -11,4 +11,7 @@
     <string name="change_bmi_format">Change BMI format</string>
     <string name="bmi_details_title">BMI result</string>
     <string name="bmi_details_description">You are strong! Keep up!</string>
+    <string name="show_records">Show records</string>
+    <string name="records_file_key">pl.krzysztofruczkowski.pwr1.records</string>
+    <string name="saved_records_key">saved_records</string>
 </resources>

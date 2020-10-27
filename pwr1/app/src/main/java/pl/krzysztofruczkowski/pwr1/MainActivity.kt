@@ -1,15 +1,22 @@
 package pl.krzysztofruczkowski.pwr1
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
+import pl.krzysztofruczkowski.pwr1.models.Record
 import java.text.DecimalFormat
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -119,9 +126,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showBmiDetails(view: View) {
+        saveBmiRecord(bmi)
+
         val intent = Intent(this, BmiDetailsActivity::class.java).apply {
             putExtra(BMI_KEY, bmi)
         }
         startActivityForResult(intent, 0)
+    }
+
+    private fun saveBmiRecord(bmi: Double) {
+        val sharedPref = getSharedPreferences(getString(R.string.records_file_key), Context.MODE_PRIVATE) ?: return
+        val recordsString = sharedPref.getString(getString(R.string.saved_records_key), "[]").toString()
+        val records = Json.decodeFromString<List<Record>>(recordsString)
+        val newRecord = Record(bmi, Date().toString())
+        val newRecordsList = (if (records.size < 10) records else records.drop(1)) + newRecord
+        with (sharedPref.edit()) {
+            putString(getString(R.string.saved_records_key), Json.encodeToString(newRecordsList))
+            apply()
+        }
+    }
+
+    fun showRecords(item: MenuItem) {
+        val intent = Intent(this, BmiDetailsActivity::class.java)
+        startActivity(intent)
     }
 }
