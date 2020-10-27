@@ -1,4 +1,4 @@
-package pl.krzysztofruczkowski.pwr1
+package pl.krzysztofruczkowski.pwr1.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

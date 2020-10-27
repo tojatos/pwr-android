@@ -1,11 +1,10 @@
-package pl.krzysztofruczkowski.pwr1
+package pl.krzysztofruczkowski.pwr1.activities
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,6 +12,9 @@ import android.view.View
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import pl.krzysztofruczkowski.pwr1.BmiForCmKg
+import pl.krzysztofruczkowski.pwr1.BmiForInLb
+import pl.krzysztofruczkowski.pwr1.R
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
 import pl.krzysztofruczkowski.pwr1.models.Record
 import java.text.DecimalFormat
@@ -147,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showRecords(item: MenuItem) {
-        val intent = Intent(this, BmiDetailsActivity::class.java)
+        val intent = Intent(this, BmiHistoryActivity::class.java)
         startActivity(intent)
     }
 }
