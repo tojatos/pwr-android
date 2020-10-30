@@ -10,8 +10,8 @@ import java.text.DecimalFormat
 
 class RecordsAdapter (private val records: List<Record>) : RecyclerView.Adapter<RecordsAdapter.ViewHolder>() {
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-        val bmiValueTextView = itemView.findViewById<TextView>(R.id.bmi_value)
-        val dateTextView = itemView.findViewById<TextView>(R.id.date)
+        val bmiValueTextView: TextView = itemView.findViewById(R.id.bmi_value)
+        val dateTextView: TextView = itemView.findViewById(R.id.date)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,7 +22,7 @@ class RecordsAdapter (private val records: List<Record>) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: RecordsAdapter.ViewHolder, position: Int) {
-        val record: Record = records.get(position)
+        val record: Record = records[position]
         val bmiValueView = holder.bmiValueTextView
         val dateView = holder.dateTextView
 

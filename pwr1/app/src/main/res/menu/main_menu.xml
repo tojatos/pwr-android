@@ -1,7 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.MainActivity" >
+    tools:context=".activities.MainActivity">
 
     <item android:id="@+id/bmi_format"
         android:title="@string/change_bmi_format"

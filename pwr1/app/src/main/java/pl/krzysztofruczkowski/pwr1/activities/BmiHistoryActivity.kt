@@ -10,9 +10,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import pl.krzysztofruczkowski.pwr1.R
 import pl.krzysztofruczkowski.pwr1.RecordsAdapter
-import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
 import pl.krzysztofruczkowski.pwr1.models.Record
-import java.util.stream.Collectors.toList
 
 class BmiHistoryActivity : AppCompatActivity() {
     private lateinit var records: List<Record>
