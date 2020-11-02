@@ -2,29 +2,27 @@ package pl.krzysztofruczkowski.pwr1.activities
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import pl.krzysztofruczkowski.pwr1.BmiForCmKg
-import pl.krzysztofruczkowski.pwr1.BmiForInLb
-import pl.krzysztofruczkowski.pwr1.R
+import pl.krzysztofruczkowski.pwr1.*
+import pl.krzysztofruczkowski.pwr1.BmiUtils.getBmiColor
 import pl.krzysztofruczkowski.pwr1.databinding.ActivityMainBinding
+import pl.krzysztofruczkowski.pwr1.models.BmiFormat
 import pl.krzysztofruczkowski.pwr1.models.Record
 import java.text.DecimalFormat
 import java.text.Format
-import java.util.Date
 import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        const val EUROPEAN_FORMAT_KEY = "EUROPEAN_FORMAT"
+        lateinit var app_resources: Resources
+        const val FORMAT_KEY = "FORMAT"
         const val HEIGHT_KEY = "HEIGHT"
         const val MASS_KEY = "MASS"
         const val BMI_KEY = "BMI"
@@ -32,7 +30,8 @@ class MainActivity : AppCompatActivity() {
         const val SAVED_RECORDS_KEY = "SAVED_RECORDS"
     }
     private lateinit var binding: ActivityMainBinding
-    private var europeanFormat = true
+    private lateinit var persistence: BmiPersistence
+    private var format = BmiFormat.EUROPEAN
     private var height: Double = 0.0
     private var mass: Double = 0.0
     private var bmi: Double = 0.0
@@ -40,13 +39,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        persistence = BmiPersistence(getSharedPreferences(RECORDS_FILE_KEY,Context.MODE_PRIVATE))
+        app_resources = resources
         val view = binding.root
         setContentView(view)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
-            putBoolean(EUROPEAN_FORMAT_KEY, europeanFormat)
+            putString(FORMAT_KEY, BmiFormat.serialize(format))
             putDouble(HEIGHT_KEY, height)
             putDouble(MASS_KEY, mass)
         }
@@ -54,12 +55,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        europeanFormat = savedInstanceState.getBoolean(EUROPEAN_FORMAT_KEY)
+        format = BmiFormat.deserialize(savedInstanceState.getString(FORMAT_KEY).toString())
         height = savedInstanceState.getDouble(HEIGHT_KEY)
         mass = savedInstanceState.getDouble(MASS_KEY)
 
-        updateBmiFormat()
-        updateBmi()
+        updateBmiFormatTexts()
+        updateBmiText()
         super.onRestoreInstanceState(savedInstanceState)
     }
 
@@ -69,35 +70,23 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getBmiColor(bmi: Double) : Int {
-        val colorString = when {
-            bmi < 16 -> "#082E79"
-            bmi < 16.99 -> "#4169E1"
-            bmi < 18.49 -> "#ACE1AF"
-            bmi < 24.99 -> "#CDEBA7"
-            bmi < 29.99 -> "#FFFF99"
-            bmi < 34.99 -> "#FDE456"
-            bmi < 39.99 -> "#CF2929"
-            else -> "#801818"
-        }
-        return Color.parseColor(colorString)
-    }
-
     fun count(view: View) {
         getDataFromTextFields()
-        updateBmi()
-        saveBmiRecord()
+        updateBmiText()
 
+        val formatter: Format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val newRecord = Record(bmi, formatter.format(Date()), height, mass, BmiUtils.getHeightUnit(format), BmiUtils.getMassUnit(format))
+        persistence.saveBmiRecord(newRecord)
     }
 
-    private fun updateBmi() {
+    private fun updateBmiText() {
         binding.apply {
-            bmi = if (europeanFormat) BmiForCmKg(mass, height).count() else BmiForInLb(mass, height).count()
-
+            bmi = BmiUtils.calculateBmi(mass, height, format)
             bmiTV.text = DecimalFormat("#.##").format(bmi)
             bmiTV.setTextColor(getBmiColor(bmi))
         }
     }
+
     private fun getDataFromTextFields() {
         binding.apply {
             if (massET.text.isBlank()) {
@@ -115,22 +104,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateBmiFormat() {
+    private fun updateBmiFormatTexts() {
         binding.apply {
-            if(europeanFormat) {
-                heightTV.text = getString(R.string.height_cm)
-                massTV.text = getString(R.string.mass_kg)
-            } else {
-                heightTV.text = getString(R.string.height_in)
-                massTV.text = getString(R.string.mass_lb)
-            }
+            heightTV.text = BmiUtils.getHeightString(format)
+            massTV.text = BmiUtils.getMassString(format)
         }
     }
 
     fun changeBmiFormat(item: MenuItem) {
-        europeanFormat = !europeanFormat
-        updateBmiFormat()
-        updateBmi()
+        format = when(format) {
+            BmiFormat.EUROPEAN -> BmiFormat.AMERICAN
+            BmiFormat.AMERICAN -> BmiFormat.EUROPEAN
+        }
+        updateBmiFormatTexts()
+        updateBmiText()
     }
 
     fun showBmiDetails(view: View) {
@@ -138,25 +125,6 @@ class MainActivity : AppCompatActivity() {
             putExtra(BMI_KEY, bmi)
         }
         startActivityForResult(intent, 0)
-    }
-
-    private fun getHeightUnit() = if (europeanFormat) getString(R.string.height_unit_cm) else getString(R.string.height_unit_in)
-    private fun getMassUnit() = if (europeanFormat) getString(R.string.mass_unit_kg) else getString(R.string.mass_unit_lb)
-
-    private fun saveBmiRecord() {
-        val sharedPref = getSharedPreferences(
-            RECORDS_FILE_KEY,
-            Context.MODE_PRIVATE,
-        ) ?: return
-        val recordsString = sharedPref.getString(SAVED_RECORDS_KEY, "[]").toString()
-        val records = Json.decodeFromString<List<Record>>(recordsString)
-        val formatter: Format = SimpleDateFormat("yyyy-MM-dd")
-        val newRecord = Record(bmi, formatter.format(Date()), height, mass, getHeightUnit(), getMassUnit())
-        val newRecordsList = (if (records.size < 10) records else records.drop(1)) + newRecord
-        with(sharedPref.edit()) {
-            putString(SAVED_RECORDS_KEY, Json.encodeToString(newRecordsList))
-            apply()
-        }
     }
 
     fun showRecords(item: MenuItem) {

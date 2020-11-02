@@ -10,7 +10,7 @@ import java.util.*
 
 class RecordSerializationTest : FunSpec({
     test("record can be serialized and deserialized") {
-        val record = Record(15.0, Date().toString())
+        val record = Record(15.0, Date().toString(), 123.0, 123.0, "cm", "kg")
         val recordJson = Json.encodeToString(record)
         print(recordJson)
         val recordDeserialized = Json.decodeFromString<Record>(recordJson)
@@ -19,7 +19,10 @@ class RecordSerializationTest : FunSpec({
     }
 
     test("records can be serialized and deserialized") {
-        val records = listOf(Record(15.0, Date().toString()), Record(12.4, "test"))
+        val records = listOf(
+            Record(15.0, Date().toString(), 123.0, 111.0, "cm", "kg"),
+            Record(12.4, "test", 123.0, 111.0, "df", "sdf"),
+        )
         val recordsJson = Json.encodeToString(records)
         print(recordsJson)
         val recordsDeserialized = Json.decodeFromString<List<Record>>(recordsJson)
