@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         const val HEIGHT_KEY = "HEIGHT"
         const val MASS_KEY = "MASS"
         const val BMI_KEY = "BMI"
+        const val RECORDS_FILE_KEY = "pl.krzysztofruczkowski.pwr1.records"
+        const val SAVED_RECORDS_KEY = "SAVED_RECORDS"
     }
     private lateinit var binding: ActivityMainBinding
     private var europeanFormat = true
@@ -84,6 +86,8 @@ class MainActivity : AppCompatActivity() {
     fun count(view: View) {
         getDataFromTextFields()
         updateBmi()
+        saveBmiRecord()
+
     }
 
     private fun updateBmi() {
@@ -130,26 +134,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showBmiDetails(view: View) {
-        saveBmiRecord(bmi)
-
         val intent = Intent(this, BmiDetailsActivity::class.java).apply {
             putExtra(BMI_KEY, bmi)
         }
         startActivityForResult(intent, 0)
     }
 
-    private fun saveBmiRecord(bmi: Double) {
+    private fun getHeightUnit() = if (europeanFormat) getString(R.string.height_unit_cm) else getString(R.string.height_unit_in)
+    private fun getMassUnit() = if (europeanFormat) getString(R.string.mass_unit_kg) else getString(R.string.mass_unit_lb)
+
+    private fun saveBmiRecord() {
         val sharedPref = getSharedPreferences(
-            getString(R.string.records_file_key),
-            Context.MODE_PRIVATE
+            RECORDS_FILE_KEY,
+            Context.MODE_PRIVATE,
         ) ?: return
-        val recordsString = sharedPref.getString(getString(R.string.saved_records_key), "[]").toString()
+        val recordsString = sharedPref.getString(SAVED_RECORDS_KEY, "[]").toString()
         val records = Json.decodeFromString<List<Record>>(recordsString)
         val formatter: Format = SimpleDateFormat("yyyy-MM-dd")
-        val newRecord = Record(bmi, formatter.format(Date()))
+        val newRecord = Record(bmi, formatter.format(Date()), height, mass, getHeightUnit(), getMassUnit())
         val newRecordsList = (if (records.size < 10) records else records.drop(1)) + newRecord
         with(sharedPref.edit()) {
-            putString(getString(R.string.saved_records_key), Json.encodeToString(newRecordsList))
+            putString(SAVED_RECORDS_KEY, Json.encodeToString(newRecordsList))
             apply()
         }
     }

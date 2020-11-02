@@ -16,8 +16,8 @@ class BmiHistoryActivity : AppCompatActivity() {
     private lateinit var records: List<Record>
 
     private fun getRecords(): List<Record> {
-        val sharedPref = getSharedPreferences(getString(R.string.records_file_key), Context.MODE_PRIVATE) ?: return emptyList()
-        val recordsString = sharedPref.getString(getString(R.string.saved_records_key), "[]").toString()
+        val sharedPref = getSharedPreferences(MainActivity.RECORDS_FILE_KEY, Context.MODE_PRIVATE) ?: return emptyList()
+        val recordsString = sharedPref.getString(MainActivity.SAVED_RECORDS_KEY, "[]").toString()
         return Json.decodeFromString(recordsString)
     }
 
