@@ -1,5 +1,0 @@
-recyclerview
-find by id
-shared preferences to save data
-zapamiętanie max 10 wyników w historii
-kotest do testów
