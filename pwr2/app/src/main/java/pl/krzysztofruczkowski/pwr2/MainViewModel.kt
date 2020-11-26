@@ -8,13 +8,19 @@ import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
 
 class MainViewModel : ViewModel() {
-    private val _pokemons = MutableLiveData<List<Pokemon>>()
-    val pokemons: LiveData<List<Pokemon>>
+    private val _pokemons = MutableLiveData<ArrayList<Pokemon>>()
+    val pokemons: LiveData<ArrayList<Pokemon>>
         get() = _pokemons
 
     fun onPokemonSwipe(position: Int) {
-        _pokemons.value = _pokemons.value?.filterIndexed { index, _ -> index != position }
-        Log.e("AAA", _pokemons.value?.map { p -> p.name }.toString())
+        _pokemons.value?.removeAt(position)
+        _pokemons.value = _pokemons.value // notify observers
+//        Log.e("AAA", _pokemons.value?.map { p -> p.name }.toString())
+    }
+
+    fun onPokemonFavourite(position: Int) {
+        _pokemons.value?.get(position)!!.favourite = ! _pokemons.value?.get(position)!!.favourite
+        _pokemons.value = _pokemons.value // notify observers
     }
 
     init {

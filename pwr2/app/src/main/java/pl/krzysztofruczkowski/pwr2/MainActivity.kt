@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        binding.rvPokemons.adapter = PokemonsAdapter(viewModel.pokemons.value ?: emptyList())
+        binding.rvPokemons.adapter = PokemonsAdapter(viewModel.pokemons.value ?: emptyList(), viewModel::onPokemonFavourite)
 
         viewModel.pokemons.observe(this, {
-            binding.rvPokemons.adapter = PokemonsAdapter(it)
+            binding.rvPokemons.adapter = PokemonsAdapter(it, viewModel::onPokemonFavourite)
         })
 
         removeItemTouchHelper.attachToRecyclerView(binding.rvPokemons)

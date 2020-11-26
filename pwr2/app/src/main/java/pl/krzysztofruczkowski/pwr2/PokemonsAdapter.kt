@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -12,12 +13,13 @@ import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
 import java.util.*
 
-class PokemonsAdapter(private val pokemons: List<Pokemon>) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
+class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : (Int) -> Unit) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val pokemonItem: LinearLayout = itemView.findViewById(R.id.item_pokemon)
         val pokemonNameTV: TextView = itemView.findViewById(R.id.item_pokemon_name)
         val pokemonCategoryTV: TextView = itemView.findViewById(R.id.item_pokemon_category)
         val pokemonImage: ImageView = itemView.findViewById(R.id.item_pokemon_image)
+        val pokemonFavicon: CheckBox = itemView.findViewById(R.id.item_pokemon_favicon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,6 +39,8 @@ class PokemonsAdapter(private val pokemons: List<Pokemon>) : RecyclerView.Adapte
         val imageId = MainActivity.app_resources.getIdentifier(pokemon.name.toLowerCase( Locale.ROOT), "drawable", MainActivity.app_package_name)
         holder.pokemonImage.setBackgroundResource(imageId)
         holder.pokemonItem.setBackgroundColor(getColorByPokeCategory(pokemon.category))
+        holder.pokemonFavicon.isChecked = pokemon.favourite
+        holder.pokemonFavicon.setOnClickListener { onFaviconClick(position) }
     }
 
     private fun getColorByPokeCategory(c: PokeCategory) : Int {
