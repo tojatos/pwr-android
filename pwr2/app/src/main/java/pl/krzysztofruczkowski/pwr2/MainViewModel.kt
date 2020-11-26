@@ -14,10 +14,25 @@ class MainViewModel : ViewModel() {
     val selectedCategory: LiveData<PokeCategory>
         get() = _selectedCategory
 
-    val filteredPokemons: List<Pokemon>?
-        get() = when (_selectedCategory.value) {
-            PokeCategory.None -> _pokemons.value
-            else -> _pokemons.value?.filter { p -> p.category == _selectedCategory.value }
+    private val _filterByFavourite = MutableLiveData<Boolean>()
+    val filterByFavourite: LiveData<Boolean>
+        get() = _filterByFavourite
+
+    val filteredPokemons: List<Pokemon>
+        get() {
+            var ps = _pokemons.value as List<Pokemon>
+
+            // filter by fav
+            if(_filterByFavourite.value == true)
+                ps = ps.filter { p -> p.favourite }
+
+            // filter by category
+            ps =  when (_selectedCategory.value) {
+                PokeCategory.None -> ps
+                else -> ps.filter { p -> p.category == _selectedCategory.value }
+            }
+
+            return ps
         }
 
     fun onPokemonSwipe(position: Int) {
@@ -37,6 +52,10 @@ class MainViewModel : ViewModel() {
         _selectedCategory.value = category
     }
 
+    fun onFavouriteClick() {
+        _filterByFavourite.value = !_filterByFavourite.value!!
+    }
+
     init {
         _pokemons.value = arrayListOf(
             Pokemon("Jolteon", "If it is angered or startled, the fur all over its body bristles like sharp needles that pierce foes. ", PokeCategory.Lightning),
@@ -49,5 +68,6 @@ class MainViewModel : ViewModel() {
             Pokemon("Sunkern", "Sunkern tries to move as little as it possibly can. It does so because it tries to conserve all the nutrients it has stored in its body for its evolution. It will not eat a thing, subsisting only on morning dew. ", PokeCategory.Seed),
         )
         _selectedCategory.value = PokeCategory.None
+        _filterByFavourite.value = false
     }
 }

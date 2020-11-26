@@ -40,20 +40,18 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.categorySpinner.adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, PokeCategory.values())
         binding.categorySpinner.onItemSelectedListener = this
 
+        viewModel.filterByFavourite.observe(this, {
+            binding.favouriteFilter.isChecked = it
+        })
+        binding.favouriteFilter.setOnClickListener { viewModel.onFavouriteClick() }
+
         val reloadAdapter = {
-            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons ?: emptyList(), viewModel::onPokemonFavourite)
+            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons, viewModel::onPokemonFavourite)
         }
-        reloadAdapter()
 
-        viewModel.pokemons.observe(this, {
-            reloadAdapter()
-//            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons ?: emptyList(), viewModel::onPokemonFavourite)
-        })
-
-        viewModel.selectedCategory.observe(this, {
-            reloadAdapter()
-//            binding.rvPokemons.adapter = PokemonsAdapter(it, viewModel::onPokemonFavourite)
-        })
+        viewModel.pokemons.observe(this, { reloadAdapter() })
+        viewModel.selectedCategory.observe(this, { reloadAdapter() })
+        viewModel.filterByFavourite.observe(this, { reloadAdapter() })
 
         removeItemTouchHelper.attachToRecyclerView(binding.rvPokemons)
         setContentView(binding.root)
