@@ -2,7 +2,10 @@ package pl.krzysztofruczkowski.pwr2
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import pl.krzysztofruczkowski.pwr2.databinding.MainActivityBinding
 import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
@@ -13,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var app_package_name: String
     }
     private lateinit var binding: MainActivityBinding
-    private val pokemons = listOf(
+    private val pokemons = arrayListOf(
         Pokemon("Jolteon", "If it is angered or startled, the fur all over its body bristles like sharp needles that pierce foes. ", PokeCategory.Lightning),
         Pokemon("Bulbasaur", "There is a plant seed on its back right from the day this Pokémon is born. The seed slowly grows larger.", PokeCategory.Seed),
         Pokemon("Pikachu", "Pikachu that can generate powerful electricity have cheek sacs that are extra soft and super stretchy.", PokeCategory.Mouse),
@@ -31,7 +34,27 @@ class MainActivity : AppCompatActivity() {
         app_package_name = packageName
 
         binding = MainActivityBinding.inflate(layoutInflater)
-        binding.rvPokemons.adapter = PokemonsAdapter(pokemons)
+        val adapter = PokemonsAdapter(pokemons)
+        binding.rvPokemons.adapter = adapter
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+//                Toast.makeText(applicationContext, "on Move", Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                Toast.makeText(applicationContext, "on Swiped", Toast.LENGTH_SHORT).show()
+                val position = viewHolder.adapterPosition
+                pokemons.removeAt(position)
+                adapter.notifyDataSetChanged()
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.rvPokemons)
+
         setContentView(binding.root)
     }
 }
