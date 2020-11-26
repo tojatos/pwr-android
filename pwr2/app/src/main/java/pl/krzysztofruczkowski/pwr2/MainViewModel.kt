@@ -1,6 +1,4 @@
 package pl.krzysztofruczkowski.pwr2
-
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,15 +10,31 @@ class MainViewModel : ViewModel() {
     val pokemons: LiveData<ArrayList<Pokemon>>
         get() = _pokemons
 
+    private val _selectedCategory  = MutableLiveData<PokeCategory>()
+    val selectedCategory: LiveData<PokeCategory>
+        get() = _selectedCategory
+
+    val filteredPokemons: List<Pokemon>?
+        get() = when (_selectedCategory.value) {
+            PokeCategory.None -> _pokemons.value
+            else -> _pokemons.value?.filter { p -> p.category == _selectedCategory.value }
+        }
+
     fun onPokemonSwipe(position: Int) {
-        _pokemons.value?.removeAt(position)
+        _pokemons.value?.remove(filteredPokemons!![position])
         _pokemons.value = _pokemons.value // notify observers
 //        Log.e("AAA", _pokemons.value?.map { p -> p.name }.toString())
     }
 
     fun onPokemonFavourite(position: Int) {
-        _pokemons.value?.get(position)!!.favourite = ! _pokemons.value?.get(position)!!.favourite
+        val favPokemon = filteredPokemons!![position]
+        val index = _pokemons.value!!.indexOf(favPokemon)
+        _pokemons.value!![index].favourite = !favPokemon.favourite
         _pokemons.value = _pokemons.value // notify observers
+    }
+
+    fun onCategorySelect(category: PokeCategory) {
+        _selectedCategory.value = category
     }
 
     init {
@@ -34,6 +48,6 @@ class MainViewModel : ViewModel() {
             Pokemon("Electrike", "It stores static electricity in its fur for discharging. It gives off sparks if a storm approaches. ", PokeCategory.Lightning),
             Pokemon("Sunkern", "Sunkern tries to move as little as it possibly can. It does so because it tries to conserve all the nutrients it has stored in its body for its evolution. It will not eat a thing, subsisting only on morning dew. ", PokeCategory.Seed),
         )
-
+        _selectedCategory.value = PokeCategory.None
     }
 }
