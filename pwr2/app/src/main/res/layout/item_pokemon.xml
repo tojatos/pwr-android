@@ -11,7 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:contentDescription="@string/pokemon_image"
-        tools:src="@drawable/ic_launcher_background"
+        tools:src="@drawable/jolteon"
         />
 
     <LinearLayout
@@ -24,6 +24,7 @@
             android:id="@+id/item_pokemon_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             tools:text="Poke name"
             />
         <TextView
