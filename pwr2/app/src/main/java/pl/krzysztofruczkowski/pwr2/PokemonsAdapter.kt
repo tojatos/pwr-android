@@ -13,7 +13,7 @@ import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
 import java.util.*
 
-class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : (Int) -> Unit) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
+class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : (Int) -> Unit, val onItemClick : (Int) -> Unit) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val pokemonItem: LinearLayout = itemView.findViewById(R.id.item_pokemon)
         val pokemonNameTV: TextView = itemView.findViewById(R.id.item_pokemon_name)
@@ -41,6 +41,7 @@ class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : 
         holder.pokemonItem.setBackgroundColor(getColorByPokeCategory(pokemon.category))
         holder.pokemonFavicon.isChecked = pokemon.favourite
         holder.pokemonFavicon.setOnClickListener { onFaviconClick(position) }
+        holder.pokemonItem.setOnClickListener { onItemClick(position) }
     }
 
     private fun getColorByPokeCategory(c: PokeCategory) : Int {

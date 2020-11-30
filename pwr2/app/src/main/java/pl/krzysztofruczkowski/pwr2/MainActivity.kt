@@ -1,5 +1,6 @@
 package pl.krzysztofruczkowski.pwr2
 
+import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
@@ -11,11 +12,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import pl.krzysztofruczkowski.pwr2.databinding.MainActivityBinding
 import pl.krzysztofruczkowski.pwr2.models.PokeCategory
+import pl.krzysztofruczkowski.pwr2.models.Pokemon
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     companion object {
         lateinit var app_resources: Resources
         lateinit var app_package_name: String
+        const val POKEMON = "pl.krzysztofruczkowski.pwr2.POKEMON"
     }
 
     private lateinit var binding: MainActivityBinding
@@ -43,15 +46,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         viewModel.filterByFavourite.observe(this, {
             binding.favouriteFilter.isChecked = it
         })
-        binding.favouriteFilter.setOnClickListener { viewModel.onFavouriteClick() }
+        binding.favouriteFilter.setOnClickListener { viewModel.onFavouriteFilterClick() }
 
         val reloadAdapter = {
-            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons, viewModel::onPokemonFavourite)
+            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons, viewModel::onPokemonFavourite, viewModel::onItemClick)
         }
 
         viewModel.pokemons.observe(this, { reloadAdapter() })
         viewModel.selectedCategory.observe(this, { reloadAdapter() })
         viewModel.filterByFavourite.observe(this, { reloadAdapter() })
+
+        val loadDescription = { pokemon: Pokemon ->
+            val intent = Intent(this, DetailsActivity::class.java).apply {
+                putExtra(POKEMON, Pokemon.serialize(pokemon))
+            }
+            startActivity(intent)
+        }
+
+        viewModel.clickedPokemon.observe(this , { loadDescription(it) })
 
         removeItemTouchHelper.attachToRecyclerView(binding.rvPokemons)
         setContentView(binding.root)

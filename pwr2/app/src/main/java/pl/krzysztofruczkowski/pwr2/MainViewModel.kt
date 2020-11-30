@@ -1,4 +1,5 @@
 package pl.krzysztofruczkowski.pwr2
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,10 @@ class MainViewModel : ViewModel() {
     private val _pokemons = MutableLiveData<ArrayList<Pokemon>>()
     val pokemons: LiveData<ArrayList<Pokemon>>
         get() = _pokemons
+
+    private val _clickedPokemon = MutableLiveData<Pokemon>()
+    val clickedPokemon: LiveData<Pokemon>
+        get() = _clickedPokemon
 
     private val _selectedCategory  = MutableLiveData<PokeCategory>()
     val selectedCategory: LiveData<PokeCategory>
@@ -36,13 +41,13 @@ class MainViewModel : ViewModel() {
         }
 
     fun onPokemonSwipe(position: Int) {
-        _pokemons.value?.remove(filteredPokemons!![position])
+        _pokemons.value?.remove(filteredPokemons[position])
         _pokemons.value = _pokemons.value // notify observers
 //        Log.e("AAA", _pokemons.value?.map { p -> p.name }.toString())
     }
 
     fun onPokemonFavourite(position: Int) {
-        val favPokemon = filteredPokemons!![position]
+        val favPokemon = filteredPokemons[position]
         val index = _pokemons.value!!.indexOf(favPokemon)
         _pokemons.value!![index].favourite = !favPokemon.favourite
         _pokemons.value = _pokemons.value // notify observers
@@ -52,8 +57,12 @@ class MainViewModel : ViewModel() {
         _selectedCategory.value = category
     }
 
-    fun onFavouriteClick() {
+    fun onFavouriteFilterClick() {
         _filterByFavourite.value = !_filterByFavourite.value!!
+    }
+
+    fun onItemClick(position: Int) {
+        _clickedPokemon.value = filteredPokemons[position]
     }
 
     init {
