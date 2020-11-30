@@ -12,13 +12,41 @@
         android:layout_height="match_parent"
         tools:context=".fragments.DescriptionFragment"
         >
-
-        <TextView
-            android:id="@+id/description"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"
-            />
+            android:orientation="vertical"
+            >
 
+            <TextView
+                android:id="@+id/pokemon_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:textColor="#000000"
+                tools:text="Sunkern"
+                />
+
+            <ImageView
+                android:id="@+id/pokemon_image"
+                android:layout_width="@dimen/poke_desc_image_height"
+                android:layout_height="@dimen/poke_desc_image_height"
+                android:layout_gravity="center"
+                tools:background="@drawable/sunkern"
+                />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:padding="@dimen/def_padding"
+                tools:text="Sunkern tries to move as little as it possibly can. It does so because it tries to conserve all the nutrients it has stored in its body for its evolution. It will not eat a thing, subsisting only on morning dew."
+                />
+        </LinearLayout>
     </FrameLayout>
 </layout>
