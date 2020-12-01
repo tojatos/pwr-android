@@ -11,12 +11,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import pl.krzysztofruczkowski.pwr2.databinding.DetailsActivityBinding
 import pl.krzysztofruczkowski.pwr2.fragments.DescriptionFragment
 import pl.krzysztofruczkowski.pwr2.fragments.EnemiesFragment
+import pl.krzysztofruczkowski.pwr2.fragments.GalleryFragment
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
 
 class DetailsActivity : AppCompatActivity() {
     companion object {
         val fragmentMap = listOf(
             Pair(MainActivity.app_resources.getString(R.string.summary), DescriptionFragment()),
+            Pair(MainActivity.app_resources.getString(R.string.gallery), GalleryFragment()),
             Pair(MainActivity.app_resources.getString(R.string.enemies), EnemiesFragment()),
         )
     }
