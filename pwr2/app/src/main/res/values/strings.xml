@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">pwr2</string>
+    <string name="app_name">Pokédex</string>
     <string name="pokemon_image">pokemon_image</string>
     <string name="pokemonsFileName">pokemons.json</string>
+    <string name="enemies">Enemies</string>
 </resources>

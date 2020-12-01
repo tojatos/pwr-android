@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_pokemon"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
         <TextView
             android:id="@+id/item_enemy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="#000000"
             tools:text="I am an enemy"
             />
 </LinearLayout>
