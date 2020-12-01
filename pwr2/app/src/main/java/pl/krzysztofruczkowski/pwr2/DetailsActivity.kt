@@ -1,15 +1,13 @@
 package pl.krzysztofruczkowski.pwr2
 
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.details_activity.*
 import pl.krzysztofruczkowski.pwr2.databinding.DetailsActivityBinding
 import pl.krzysztofruczkowski.pwr2.fragments.DescriptionFragment
 import pl.krzysztofruczkowski.pwr2.fragments.EnemiesFragment
@@ -18,8 +16,8 @@ import pl.krzysztofruczkowski.pwr2.models.Pokemon
 class DetailsActivity : AppCompatActivity() {
     companion object {
         val fragmentMap = listOf(
-            Pair("Summary", DescriptionFragment()),
-            Pair("Enemies", EnemiesFragment()),
+            Pair(MainActivity.app_resources.getString(R.string.summary), DescriptionFragment()),
+            Pair(MainActivity.app_resources.getString(R.string.enemies), EnemiesFragment()),
         )
     }
 

@@ -3,4 +3,5 @@
     <string name="pokemon_image">pokemon_image</string>
     <string name="pokemonsFileName">pokemons.json</string>
     <string name="enemies">Enemies</string>
+    <string name="summary">Summary</string>
 </resources>
