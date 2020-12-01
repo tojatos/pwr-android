@@ -3,6 +3,7 @@ package pl.krzysztofruczkowski.pwr2
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import pl.krzysztofruczkowski.pwr2.databinding.MainActivityBinding
 import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
