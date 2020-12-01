@@ -3,38 +3,47 @@ package pl.krzysztofruczkowski.pwr2
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.details_activity.*
 import pl.krzysztofruczkowski.pwr2.databinding.DetailsActivityBinding
+import pl.krzysztofruczkowski.pwr2.fragments.DescriptionFragment
+import pl.krzysztofruczkowski.pwr2.fragments.EnemiesFragment
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
 
 class DetailsActivity : AppCompatActivity() {
+    companion object {
+        val fragmentMap = listOf(
+            Pair("Summary", DescriptionFragment()),
+            Pair("Enemies", EnemiesFragment()),
+        )
+    }
 
     lateinit var pokemon: Pokemon
+    lateinit var viewPager: ViewPager2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pokemon = Pokemon.deserialize(intent.getStringExtra(MainActivity.POKEMON)!!)
 
         val binding = DataBindingUtil.setContentView<DetailsActivityBinding>(this, R.layout.details_activity)
-//        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-//            when(item.itemId) {
-//                R.id.page_1 -> {
-//                    findNavController().navigate(R.id.action_descriptionFragment_to_enemiesFragment)
-//                    true
-//                }
-//                R.id.page_2 -> {
-//                    findNavController().navigate(R.id.action_enemiesFragment_to_descriptionFragment)
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-        val navController = Navigation.findNavController(this, R.id.detailsNavHostFragment)
 
-        binding.apply {
-            bottomNavigation.setupWithNavController(navController)
-        }
+        viewPager = binding.pager
+        viewPager.adapter = DetailsActivityAdapter(this)
+        TabLayoutMediator(binding.tabLayout, viewPager) { tab, position ->
+            tab.text = fragmentMap[position].first
+        }.attach()
+
     }
+}
+
+class DetailsActivityAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+    override fun getItemCount(): Int = DetailsActivity.fragmentMap.count()
+
+    override fun createFragment(position: Int): Fragment =
+        DetailsActivity.fragmentMap[position].second
 }
