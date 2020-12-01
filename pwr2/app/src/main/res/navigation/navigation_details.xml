@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/descriptionFragment">
+
+    <fragment
+        android:id="@+id/descriptionFragment"
+        android:name="pl.krzysztofruczkowski.pwr2.fragments.DescriptionFragment"
+        android:label="DescriptionFragment"
+        tools:layout="@layout/fragment_description"
+        >
+        <action
+            android:id="@+id/action_descriptionFragment_to_enemiesFragment"
+            app:destination="@id/enemiesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/enemiesFragment"
+        android:name="pl.krzysztofruczkowski.pwr2.fragments.EnemiesFragment"
+        android:label="EnemiesFragment"
+        tools:layout="@layout/fragment_enemies"
+        >
+        <action
+            android:id="@+id/action_enemiesFragment_to_descriptionFragment"
+            app:destination="@id/descriptionFragment" />
+    </fragment>
+</navigation>
