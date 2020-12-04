@@ -20,7 +20,7 @@
             android:gravity="center"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="#000000"
+            android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,12 +32,12 @@
             android:layout_width="@dimen/poke_desc_image_height"
             android:layout_height="0dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/pokemon"
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pokemon_name"
             tools:src="@drawable/sunkern"
-            android:contentDescription="@string/pokemon"
             />
 
         <TextView
