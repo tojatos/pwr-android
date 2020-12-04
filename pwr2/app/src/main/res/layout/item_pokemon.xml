@@ -3,14 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_pokemon"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:orientation="horizontal">
+    android:layout_height="@dimen/poke_item_height"
+    android:orientation="horizontal"
+    tools:background="#ff0000"
+    >
 
     <ImageView
         android:id="@+id/item_pokemon_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/poke_item_height"
+        android:layout_height="@dimen/poke_item_height"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/pokemon_image"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         tools:src="@drawable/jolteon"
         />
 
@@ -23,14 +28,21 @@
         <TextView
             android:id="@+id/item_pokemon_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="20sp"
             tools:text="Poke name"
             />
         <TextView
             android:id="@+id/item_pokemon_category"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:layout_margin="5dp"
+            android:textColor="#000000"
+            android:padding="3dp"
             tools:text="Poke category"
             />
 
