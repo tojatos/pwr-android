@@ -3,6 +3,7 @@ package pl.krzysztofruczkowski.pwr2
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -48,13 +49,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         })
         binding.favouriteFilter.setOnClickListener { viewModel.onFavouriteFilterClick() }
 
-        val reloadAdapter = {
-            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons, viewModel::onPokemonFavourite, viewModel::onItemClick)
-        }
-
-        viewModel.pokemons.observe(this, { reloadAdapter() })
-        viewModel.selectedCategory.observe(this, { reloadAdapter() })
-        viewModel.filterByFavourite.observe(this, { reloadAdapter() })
 
         val loadDescription = { pokemon: Pokemon ->
             val intent = Intent(this, DetailsActivity::class.java).apply {
@@ -63,7 +57,17 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             startActivity(intent)
         }
 
-        viewModel.clickedPokemon.observe(this , { loadDescription(it) })
+        val loadDescriptionById = { id: Int ->
+            loadDescription(viewModel.filteredPokemons[id])
+        }
+
+        val reloadAdapter = {
+            binding.rvPokemons.adapter = PokemonsAdapter(viewModel.filteredPokemons, viewModel::onPokemonFavourite, loadDescriptionById)
+        }
+
+        viewModel.pokemons.observe(this, { reloadAdapter() })
+        viewModel.selectedCategory.observe(this, { reloadAdapter() })
+        viewModel.filterByFavourite.observe(this, { reloadAdapter() })
 
         removeItemTouchHelper.attachToRecyclerView(binding.rvPokemons)
         setContentView(binding.root)

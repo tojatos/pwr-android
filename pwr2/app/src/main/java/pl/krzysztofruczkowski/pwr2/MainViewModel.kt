@@ -13,10 +13,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val pokemons: LiveData<ArrayList<Pokemon>>
         get() = _pokemons
 
-    private val _clickedPokemon = MutableLiveData<Pokemon>()
-    val clickedPokemon: LiveData<Pokemon>
-        get() = _clickedPokemon
-
     private val _selectedCategory  = MutableLiveData<PokeCategory>()
     val selectedCategory: LiveData<PokeCategory>
         get() = _selectedCategory
@@ -60,10 +56,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onFavouriteFilterClick() {
         _filterByFavourite.value = !_filterByFavourite.value!!
-    }
-
-    fun onItemClick(position: Int) {
-        _clickedPokemon.value = filteredPokemons[position]
     }
 
     init {
