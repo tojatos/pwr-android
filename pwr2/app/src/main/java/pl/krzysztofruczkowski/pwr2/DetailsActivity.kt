@@ -1,6 +1,5 @@
 package pl.krzysztofruczkowski.pwr2
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -24,7 +23,7 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     lateinit var pokemon: Pokemon
-    lateinit var viewPager: ViewPager2
+    private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

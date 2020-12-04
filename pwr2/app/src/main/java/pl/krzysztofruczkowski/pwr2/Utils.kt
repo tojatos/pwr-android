@@ -3,7 +3,6 @@ package pl.krzysztofruczkowski.pwr2
 import android.content.Context
 import android.content.res.Resources
 import java.io.IOException
-import java.util.*
 
 fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     val jsonString: String

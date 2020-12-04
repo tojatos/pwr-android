@@ -28,8 +28,7 @@
         <TextView
             android:id="@+id/item_pokemon_name"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="#000000"
             android:textSize="20sp"

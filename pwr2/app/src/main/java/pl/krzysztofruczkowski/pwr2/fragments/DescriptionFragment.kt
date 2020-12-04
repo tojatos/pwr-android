@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import pl.krzysztofruczkowski.pwr2.DetailsActivity
-import pl.krzysztofruczkowski.pwr2.MainActivity
 import pl.krzysztofruczkowski.pwr2.R
 import pl.krzysztofruczkowski.pwr2.databinding.FragmentDescriptionBinding
 import pl.krzysztofruczkowski.pwr2.getImageIdByName

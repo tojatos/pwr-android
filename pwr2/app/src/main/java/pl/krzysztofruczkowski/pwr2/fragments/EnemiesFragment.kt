@@ -1,18 +1,15 @@
 package pl.krzysztofruczkowski.pwr2.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_description.*
-import kotlinx.android.synthetic.main.fragment_enemies.*
-import pl.krzysztofruczkowski.pwr2.*
-import pl.krzysztofruczkowski.pwr2.databinding.FragmentDescriptionBinding
+import androidx.fragment.app.Fragment
+import pl.krzysztofruczkowski.pwr2.DetailsActivity
+import pl.krzysztofruczkowski.pwr2.EnemiesAdapter
+import pl.krzysztofruczkowski.pwr2.R
 import pl.krzysztofruczkowski.pwr2.databinding.FragmentEnemiesBinding
-import java.util.*
 
 class EnemiesFragment : Fragment() {
 
