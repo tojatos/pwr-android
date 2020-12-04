@@ -11,8 +11,10 @@
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:layout_height="match_parent"
+            android:maxWidth="400dp"
+            android:layout_gravity="center"
             android:adjustViewBounds="true"
             tools:src="@drawable/gallery_3"
             />

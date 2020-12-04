@@ -14,16 +14,6 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-            android:textColor="#000000"
-            android:text="@string/gallery"
-            />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_gallery"
             android:layout_width="match_parent"
