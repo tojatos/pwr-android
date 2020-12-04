@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textAppearance="?attr/textAppearanceHeadline5"
             android:textColor="?android:attr/textColorPrimary"
             android:text="@string/enemies"
             />

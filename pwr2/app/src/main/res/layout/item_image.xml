@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/def_padding"
     android:orientation="vertical"
-    android:background="@color/black"
     >
 
         <ImageView

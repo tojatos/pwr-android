@@ -20,6 +20,7 @@ class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : 
         val pokemonCategoryTV: TextView = itemView.findViewById(R.id.item_pokemon_category)
         val pokemonImage: ImageView = itemView.findViewById(R.id.item_pokemon_image)
         val pokemonFavicon: CheckBox = itemView.findViewById(R.id.item_pokemon_favicon)
+        val pokemonCategoryColor: View = itemView.findViewById(R.id.item_pokemon_category_color)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,7 +39,7 @@ class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : 
         holder.pokemonCategoryTV.text = pokemon.category.toString()
         val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), MainActivity.app_resources, MainActivity.app_package_name)
         holder.pokemonImage.setImageResource(imageId)
-        holder.pokemonItem.setBackgroundColor(getColorByPokeCategory(pokemon.category))
+        holder.pokemonCategoryColor.setBackgroundColor(getColorByPokeCategory(pokemon.category))
         holder.pokemonFavicon.isChecked = pokemon.favourite
         holder.pokemonFavicon.setOnClickListener { onFaviconClick(position) }
         holder.pokemonItem.setOnClickListener { onItemClick(position) }
