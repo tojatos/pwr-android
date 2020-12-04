@@ -37,7 +37,7 @@ class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : 
         holder.pokemonNameTV.text = pokemon.name
         holder.pokemonCategoryTV.text = pokemon.category.toString()
         val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), MainActivity.app_resources, MainActivity.app_package_name)
-        holder.pokemonImage.setBackgroundResource(imageId)
+        holder.pokemonImage.setImageResource(imageId)
         holder.pokemonItem.setBackgroundColor(getColorByPokeCategory(pokemon.category))
         holder.pokemonFavicon.isChecked = pokemon.favourite
         holder.pokemonFavicon.setOnClickListener { onFaviconClick(position) }

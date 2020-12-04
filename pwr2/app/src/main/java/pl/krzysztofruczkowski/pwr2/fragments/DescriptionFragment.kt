@@ -24,7 +24,7 @@ class DescriptionFragment : Fragment() {
         binding.apply {
             pokemonName.text = pokemon.name
             val imageId = MainActivity.app_resources.getIdentifier(pokemon.name.toLowerCase( Locale.ROOT), "drawable", MainActivity.app_package_name)
-            pokemonImage.setBackgroundResource(imageId)
+            pokemonImage.setImageResource(imageId)
             description.text = pokemon.description
         }
 
