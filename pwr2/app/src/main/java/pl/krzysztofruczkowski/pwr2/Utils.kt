@@ -1,7 +1,7 @@
 package pl.krzysztofruczkowski.pwr2
 
+import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import java.io.IOException
 
 fun getJsonDataFromAsset(context: Context, fileName: String): String? {
@@ -15,5 +15,5 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     return jsonString
 }
 
-fun getImageIdByName(fileName: String, resources: Resources, appPackageName: String): Int =
-    resources.getIdentifier(fileName, "drawable", appPackageName)
+fun getImageIdByName(fileName: String, activity: Activity): Int =
+    activity.resources.getIdentifier(fileName, "drawable", activity.packageName)

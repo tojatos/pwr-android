@@ -1,5 +1,6 @@
-package pl.krzysztofruczkowski.pwr2
+package pl.krzysztofruczkowski.pwr2.adapters
 
+import android.app.Activity
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,18 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import pl.krzysztofruczkowski.pwr2.R
+import pl.krzysztofruczkowski.pwr2.getImageIdByName
 import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
 import java.util.*
 
-class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : (Int) -> Unit, val onItemClick : (Int) -> Unit) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
+class PokemonsAdapter(
+    private val pokemons: List<Pokemon>,
+    private val activity: Activity,
+    val onFaviconClick: (Int) -> Unit,
+    val onItemClick: (Int) -> Unit
+) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val pokemonItem: LinearLayout = itemView.findViewById(R.id.item_pokemon)
         val pokemonNameTV: TextView = itemView.findViewById(R.id.item_pokemon_name)
@@ -37,7 +45,7 @@ class PokemonsAdapter(private val pokemons: List<Pokemon>, val onFaviconClick : 
 
         holder.pokemonNameTV.text = pokemon.name
         holder.pokemonCategoryTV.text = pokemon.category.toString()
-        val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), MainActivity.app_resources, MainActivity.app_package_name)
+        val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), activity)
         holder.pokemonImage.setImageResource(imageId)
         holder.pokemonCategoryColor.setBackgroundColor(getColorByPokeCategory(pokemon.category))
         holder.pokemonFavicon.isChecked = pokemon.favourite
