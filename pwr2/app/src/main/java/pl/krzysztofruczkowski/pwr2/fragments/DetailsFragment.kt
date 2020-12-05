@@ -13,11 +13,7 @@ import pl.krzysztofruczkowski.pwr2.databinding.FragmentDetailsBinding
 
 class DetailsFragment : Fragment() {
     companion object {
-        val fragmentMap = listOf(
-            Pair("Summary", DescriptionFragment()),
-            Pair("Gallery", GalleryFragment()),
-            Pair("Enemies", EnemiesFragment()),
-        )
+        lateinit var fragmentMap : List<Pair<String, Fragment>>
     }
 
     private lateinit var viewPager: ViewPager2
@@ -25,6 +21,12 @@ class DetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentDetailsBinding>(inflater,
             R.layout.fragment_details, container, false)
+
+        fragmentMap = listOf(
+            Pair(getString(R.string.Summary), DescriptionFragment()),
+            Pair(getString(R.string.Gallery), GalleryFragment()),
+            Pair(getString(R.string.Enemies), EnemiesFragment()),
+        )
 
         viewPager = binding.pager
         viewPager.adapter = DetailsNavigationAdapter(this)

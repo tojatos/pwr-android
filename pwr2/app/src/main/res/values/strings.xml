@@ -6,4 +6,7 @@
     <string name="summary">Summary</string>
     <string name="gallery">Gallery</string>
     <string name="pokemon">pokemon</string>
+    <string name="Summary">Summary</string>
+    <string name="Gallery">Gallery</string>
+    <string name="Enemies">Enemies</string>
 </resources>
