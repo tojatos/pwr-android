@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_pokemon"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_baseline_arrow_right_24"
-            android:contentDescription="@null"
-            />
-        <TextView
-            android:id="@+id/item_enemy"
+    >
+
+        <data>
+
+        </data>
+
+        <LinearLayout
+            android:id="@+id/item_pokemon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textColor="?android:attr/textColorPrimary"
-            tools:text="I am an enemy"
-            />
-</LinearLayout>
+            android:orientation="horizontal"
+            >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_arrow_right_24"
+                    android:contentDescription="@null"
+                    />
+
+                <TextView
+                    android:id="@+id/item_enemy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="I am an enemy"
+                    />
+        </LinearLayout>
+</layout>

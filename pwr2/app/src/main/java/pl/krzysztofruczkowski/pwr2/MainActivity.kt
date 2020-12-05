@@ -1,4 +1,4 @@
-package pl.krzysztofruczkowski.pwr2.adapters
+package pl.krzysztofruczkowski.pwr2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

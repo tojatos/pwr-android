@@ -3,14 +3,10 @@ package pl.krzysztofruczkowski.pwr2.adapters
 import android.app.Activity
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.krzysztofruczkowski.pwr2.R
+import pl.krzysztofruczkowski.pwr2.databinding.ItemPokemonBinding
 import pl.krzysztofruczkowski.pwr2.getImageIdByName
 import pl.krzysztofruczkowski.pwr2.models.PokeCategory
 import pl.krzysztofruczkowski.pwr2.models.Pokemon
@@ -22,36 +18,31 @@ class PokemonsAdapter(
     val onFaviconClick: (Int) -> Unit,
     val onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<PokemonsAdapter.ViewHolder>() {
-    inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-        val pokemonItem: LinearLayout = itemView.findViewById(R.id.item_pokemon)
-        val pokemonNameTV: TextView = itemView.findViewById(R.id.item_pokemon_name)
-        val pokemonCategoryTV: TextView = itemView.findViewById(R.id.item_pokemon_category)
-        val pokemonImage: ImageView = itemView.findViewById(R.id.item_pokemon_image)
-        val pokemonFavicon: CheckBox = itemView.findViewById(R.id.item_pokemon_favicon)
-        val pokemonCategoryColor: View = itemView.findViewById(R.id.item_pokemon_category_color)
+    inner class ViewHolder(val binding: ItemPokemonBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(position: Int) {
+            val pokemon = pokemons[position]
+            val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), activity)
+            binding.apply {
+                itemPokemon.setOnClickListener { onItemClick(position) }
+                itemPokemonName.text = pokemon.name
+                itemPokemonCategory.text = pokemon.category.toString()
+                itemPokemonImage.setImageResource(imageId)
+                itemPokemonCategoryColor.setBackgroundColor(getColorByPokeCategory(pokemon.category))
+                itemPokemonFavicon.isChecked = pokemon.favourite
+                itemPokemonFavicon.setOnClickListener { onFaviconClick(position) }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val context = parent.context
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.item_pokemon, parent, false)
-        return ViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemPokemonBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = pokemons.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val pokemon: Pokemon = pokemons[position]
-
-        holder.pokemonNameTV.text = pokemon.name
-        holder.pokemonCategoryTV.text = pokemon.category.toString()
-        val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), activity)
-        holder.pokemonImage.setImageResource(imageId)
-        holder.pokemonCategoryColor.setBackgroundColor(getColorByPokeCategory(pokemon.category))
-        holder.pokemonFavicon.isChecked = pokemon.favourite
-        holder.pokemonFavicon.setOnClickListener { onFaviconClick(position) }
-        holder.pokemonItem.setOnClickListener { onItemClick(position) }
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(position)
 
     private fun getColorByPokeCategory(c: PokeCategory) : Int {
         val colorString = when (c) {
