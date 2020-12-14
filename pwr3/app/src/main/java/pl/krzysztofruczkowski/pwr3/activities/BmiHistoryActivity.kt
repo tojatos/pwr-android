@@ -8,24 +8,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import pl.krzysztofruczkowski.pwr3.BmiPersistence
 import pl.krzysztofruczkowski.pwr3.R
 import pl.krzysztofruczkowski.pwr3.RecordsAdapter
+import pl.krzysztofruczkowski.pwr3.database.RecordDatabase
 import pl.krzysztofruczkowski.pwr3.models.Record
 
 class BmiHistoryActivity : AppCompatActivity() {
     private lateinit var records: List<Record>
+    private lateinit var db: RecordDatabase
 
-    private fun getRecords(): List<Record> {
-        val sharedPref = getSharedPreferences(MainActivity.RECORDS_FILE_KEY, Context.MODE_PRIVATE) ?: return emptyList()
-        val recordsString = sharedPref.getString(MainActivity.SAVED_RECORDS_KEY, "[]").toString()
-        return Json.decodeFromString(recordsString)
-    }
+    private fun getRecords(): List<Record> = BmiPersistence(db.recordDatabaseDao).getBmiRecords().map {it.toRecord()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        db = RecordDatabase.getInstance(applicationContext)
 
         setContentView(R.layout.activity_bmi_history)
-
         val rvRecords = findViewById<View>(R.id.rvRecords) as RecyclerView
         records = getRecords()
         val adapter = RecordsAdapter(records)

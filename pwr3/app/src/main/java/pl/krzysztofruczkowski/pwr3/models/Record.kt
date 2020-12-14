@@ -1,6 +1,7 @@
 package pl.krzysztofruczkowski.pwr3.models
 
 import kotlinx.serialization.Serializable
+import pl.krzysztofruczkowski.pwr3.database.RecordEntity
 
 @Serializable
 data class Record(
@@ -10,4 +11,7 @@ data class Record(
     val mass: Double,
     val heightUnit: String,
     val massUnit: String,
-)
+) {
+    fun toEntity() = RecordEntity(0L, bmi, date, height, mass, heightUnit, massUnit)
+}
+

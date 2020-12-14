@@ -1,23 +1,12 @@
 package pl.krzysztofruczkowski.pwr3
 
-import android.content.SharedPreferences
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import pl.krzysztofruczkowski.pwr3.activities.MainActivity
+import kotlinx.coroutines.runBlocking
+import pl.krzysztofruczkowski.pwr3.database.RecordDao
+import pl.krzysztofruczkowski.pwr3.database.RecordEntity
 import pl.krzysztofruczkowski.pwr3.models.Record
 
-class BmiPersistence(private val sharedPref: SharedPreferences) {
+class BmiPersistence(private val dao: RecordDao) {
 
-    fun saveBmiRecord(newRecord: Record) {
-        val recordsString = sharedPref.getString(MainActivity.SAVED_RECORDS_KEY, "[]").toString()
-        val records = Json.decodeFromString<List<Record>>(recordsString)
-        val newRecordsList = (if (records.size < 10) records else records.drop(1)) + newRecord
-        with(sharedPref.edit()) {
-            putString(MainActivity.SAVED_RECORDS_KEY, Json.encodeToString(newRecordsList))
-            apply()
-        }
-    }
-
-
+    fun saveBmiRecord(newRecord: Record) = runBlocking { dao.insert(newRecord.toEntity()) }
+    fun getBmiRecords(): List<RecordEntity> = runBlocking { dao.getTenRecords() }
 }

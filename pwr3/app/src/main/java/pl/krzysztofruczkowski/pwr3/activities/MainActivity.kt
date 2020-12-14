@@ -1,6 +1,5 @@
 package pl.krzysztofruczkowski.pwr3.activities
 
-import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -11,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import pl.krzysztofruczkowski.pwr3.*
 import pl.krzysztofruczkowski.pwr3.BmiUtils.getBmiColor
+import pl.krzysztofruczkowski.pwr3.database.RecordDatabase
 import pl.krzysztofruczkowski.pwr3.databinding.ActivityMainBinding
 import pl.krzysztofruczkowski.pwr3.models.BmiFormat
 import pl.krzysztofruczkowski.pwr3.models.Record
@@ -39,7 +39,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        persistence = BmiPersistence(getSharedPreferences(RECORDS_FILE_KEY,Context.MODE_PRIVATE))
+
+//        val db = Room.databaseBuilder(
+//            applicationContext,
+//            RecordDatabase::class.java, "database-name"
+//        ).build()
+        val db = RecordDatabase.getInstance(applicationContext)
+
+        persistence = BmiPersistence(db.recordDatabaseDao)
         app_resources = resources
         val view = binding.root
         setContentView(view)
