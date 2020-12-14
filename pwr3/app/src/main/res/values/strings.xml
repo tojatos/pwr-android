@@ -1,0 +1,24 @@
+<resources>
+    <string name="mass_kg">Mass [kg]:</string>
+    <string name="mass_lb">Mass [lb]:</string>
+    <string name="count_bmi">Count BMI</string>
+    <string name="empty_value">0.00</string>
+    <string name="height_is_empty">Please provide value.</string>
+    <string name="mass_is_empty">Please provide value.</string>
+    <string name="height_cm">Height [cm]:</string>
+    <string name="height_in">Height [in]:</string>
+    <string name="app_name">BMI App</string>
+    <string name="change_bmi_format">Change BMI format</string>
+    <string name="bmi_details_title">BMI result</string>
+    <string name="bmi_details_description">You are strong! Keep up!</string>
+    <string name="show_records">Show records</string>
+    <string name="bmi_history">BMI History</string>
+    <string name="bmi">BMI</string>
+    <string name="date">Date</string>
+    <string name="height_unit_cm">[cm]</string>
+    <string name="height_unit_in">[in]</string>
+    <string name="mass_unit_kg">[kg]</string>
+    <string name="mass_unit_lb">[lb]</string>
+    <string name="weight">Weight</string>
+    <string name="height">Height</string>
+</resources>
