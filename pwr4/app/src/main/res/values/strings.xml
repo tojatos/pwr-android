@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Music Player</string>
+    <string name="action_open_directory">open directory</string>
 </resources>
