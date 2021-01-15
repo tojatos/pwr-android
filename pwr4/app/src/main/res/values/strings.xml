@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Music Player</string>
     <string name="action_open_directory">open directory</string>
+    <string name="please_select_a_music_directory">Please select a music directory</string>
 </resources>

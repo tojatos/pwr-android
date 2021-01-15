@@ -23,5 +23,15 @@
             tools:listitem="@layout/item_track"
             />
 
+        <TextView
+            android:id="@+id/emptyMusicText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/please_select_a_music_directory"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+            android:gravity="center"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
 </layout>

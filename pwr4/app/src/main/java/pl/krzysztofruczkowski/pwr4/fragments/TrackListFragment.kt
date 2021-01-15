@@ -31,6 +31,13 @@ class TrackListFragment : Fragment() {
         val reloadAdapter = {
             val tracks: List<Track> = viewModel.tracks.value as List<Track>
             binding.rvMusic.adapter = TrackAdapter(tracks, selectAndNavigate)
+            if (tracks.isEmpty()) {
+                binding.emptyMusicText.visibility = View.VISIBLE
+                binding.rvMusic.visibility = View.GONE
+            } else {
+                binding.emptyMusicText.visibility = View.GONE
+                binding.rvMusic.visibility = View.VISIBLE
+            }
         }
 
         viewModel.tracks.observe(viewLifecycleOwner, { reloadAdapter() })
