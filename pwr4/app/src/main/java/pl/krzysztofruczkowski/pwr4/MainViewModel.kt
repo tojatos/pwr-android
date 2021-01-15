@@ -11,21 +11,19 @@ class MainViewModel(application: Application) :AndroidViewModel(application) {
     val tracks: LiveData<ArrayList<Track>>
         get() = _tracks
 
+    private val _selectedTrack = MutableLiveData<Track>()
+    val selectedTrack: LiveData<Track>
+        get() = _selectedTrack
+
     fun updateTracks(tracks: List<Track>) {
         _tracks.value = tracks as ArrayList<Track>
     }
 
+    fun selectTrack(position: Int) {
+        _selectedTrack.value = _tracks.value!![position]
+    }
+
     init {
-        _tracks.value = arrayListOf(
-                Track("Name1"),
-                Track("a"),
-                Track("Some really fancy track title that is very long (too long)"),
-                Track("Some really fancy track title that is very long (too long)"),
-                Track("Some really fancy track title that is very long (too long)"),
-                Track("Some really fancy track title that is very long (too long)"),
-                Track("Some really fancy track title that is very long (too long)"),
-                Track("Some really fancy track title that is very long (too long)"),
-                Track("Some really fancy track title that is very long (too long)"),
-        )
+        _tracks.value = arrayListOf()
     }
 }

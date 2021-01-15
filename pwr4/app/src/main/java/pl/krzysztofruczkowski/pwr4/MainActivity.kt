@@ -1,6 +1,7 @@
 package pl.krzysztofruczkowski.pwr4
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
@@ -53,9 +54,6 @@ class MainActivity : AppCompatActivity() {
     private fun showSongs(treeUri: Uri) {
         val dir = DocumentFile.fromTreeUri(applicationContext, treeUri)
         if (dir == null || !dir.isDirectory) return
-        val names = dir.listFiles().map { f -> f.name ?: "No name" }
-        viewModel.updateTracks(names.map { n -> Track(n) })
-
-        Log.i("X", names.toString())
+        viewModel.updateTracks(dir.listFiles().map { f -> Track(f.name ?: "No name", f.uri) })
     }
 }

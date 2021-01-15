@@ -1,5 +1,6 @@
 package pl.krzysztofruczkowski.pwr4.fragments
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,14 +17,22 @@ import pl.krzysztofruczkowski.pwr4.models.Track
 class TrackListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        val mp = MediaPlayer()
+        mp.setOnPreparedListener {
+            mp.start()
+        }
         val binding = DataBindingUtil.inflate<FragmentTrackListBinding>(inflater, R.layout.fragment_track_list, container, false)
 
         val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         val selectAndNavigate = { id: Int ->
-//            viewModel.selectPokemon(id)
+            viewModel.selectTrack(id)
 //            findNavController().navigate(R.id.action_mainFragment_to_detailsFragment)
+            mp.setDataSource(requireContext(), viewModel.selectedTrack.value!!.uri)
+            mp.prepareAsync()
         }
+
+
 
         val reloadAdapter = {
             val tracks: List<Track> = viewModel.tracks.value as List<Track>
