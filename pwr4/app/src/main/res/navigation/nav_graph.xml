@@ -10,5 +10,13 @@
         android:name="pl.krzysztofruczkowski.pwr4.fragments.TrackListFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_track_list"
-        />
+        >
+        <action
+            android:id="@+id/action_mainFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/trackFragment"
+        android:name="pl.krzysztofruczkowski.pwr4.fragments.TrackFragment"
+        android:label="TrackFragment" />
 </navigation>
