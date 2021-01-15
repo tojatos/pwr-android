@@ -11,6 +11,10 @@ class MainViewModel(application: Application) :AndroidViewModel(application) {
     val tracks: LiveData<ArrayList<Track>>
         get() = _tracks
 
+    fun updateTracks(tracks: List<Track>) {
+        _tracks.value = tracks as ArrayList<Track>
+    }
+
     init {
         _tracks.value = arrayListOf(
                 Track("Name1"),

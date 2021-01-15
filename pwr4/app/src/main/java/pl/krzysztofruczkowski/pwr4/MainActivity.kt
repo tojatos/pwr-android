@@ -11,13 +11,19 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.MaterialToolbar
+import pl.krzysztofruczkowski.pwr4.models.Track
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         fun startDirectoryChooser() {
             val i = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
@@ -47,7 +53,9 @@ class MainActivity : AppCompatActivity() {
     private fun showSongs(treeUri: Uri) {
         val dir = DocumentFile.fromTreeUri(applicationContext, treeUri)
         if (dir == null || !dir.isDirectory) return
-        val names = dir.listFiles().map { f -> f.name }
+        val names = dir.listFiles().map { f -> f.name ?: "No name" }
+        viewModel.updateTracks(names.map { n -> Track(n) })
+
         Log.i("X", names.toString())
     }
 }
