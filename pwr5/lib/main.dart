@@ -9,109 +9,97 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pesel Checker',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      themeMode: ThemeMode.dark,
+      debugShowCheckedModeBanner: false,
+      home: PeselChecker(title: 'Pesel Checker'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class PeselChecker extends StatefulWidget {
+  PeselChecker({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _PeselCheckerState createState() => _PeselCheckerState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _PeselCheckerState extends State<PeselChecker> {
+  var weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3, 1];
+  String _pesel = "";
+  bool peselValid() => _pesel.length == 11;
+  int calculateChecksum() {
+    var x = _pesel.split('').map(int.parse).toList();
+    var sum = 0;
+    for (var i = 0; i < 11; i++) {
+      sum += weights[i] * x[i];
+    }
+    return sum % 10;
+  }
 
-  void _incrementCounter() {
+  bool checksumValid() => peselValid() && calculateChecksum() == 0;
+  String birthDate() {
+    if (_pesel.length < 6) return 'Brak informacji';
+
+    var x = _pesel.split('').map(int.parse).toList();
+    var year = 1900 + x[0] * 10 + x[1];
+    if (x[2] >= 2 && x[2] < 8) year += (x[2] / 2).floor() * 100;
+    if (x[2] >= 8) year -= 100;
+
+    var month = (x[2] % 2) * 10 + x[3];
+    var day = x[4] * 10 + x[5];
+
+    return '$day $month $year';
+  }
+
+  String sex() {
+    if (_pesel.length < 10) return 'Brak informacji';
+
+    var x = _pesel.split('').map(int.parse).toList();
+    return (x[9] % 2 == 1) ? 'M' : 'K';
+  }
+
+  void _setPesel(String value) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _pesel = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        margin: EdgeInsets.only(left: 20, right: 20),
+        child: ListView(
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            TextField(
+              keyboardType: TextInputType.number,
+              onChanged: _setPesel,
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Wpisz pesel'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Row(children: <Widget>[
+              Text('Poprawna długość: '),
+              Icon(peselValid() ? Icons.check : Icons.close)
+            ]),
+            Text('Data urodzenia: ${birthDate()}'),
+            Text('Płeć: ${sex()}'),
+            Row(children: <Widget>[
+              Text('Poprawna suma kontrolna: '),
+              Icon(checksumValid() ? Icons.check : Icons.close)
+            ]),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

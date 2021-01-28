@@ -13,3 +13,8 @@
 * pwr3: Aplikacja BMI z bazą danych Room
 * pwr4: Music player
 * pwr5: Aplikacja do walidowania numeru PESEL we Flutterze
+
+<div style="display: inline-block">
+  <img src="../assets/pwr5/1.png?raw=true" width="300"/>
+  <img src="../assets/pwr5/2.png?raw=true" width="300"/>
+<div>
