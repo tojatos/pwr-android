@@ -25,31 +25,21 @@ class TrackFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentTrackBinding>(inflater, R.layout.fragment_track, container, false)
         val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
-        val selectedTrack = viewModel.selectedTrack.value!!
-        requireActivity().mediaController.transportControls.playFromMediaId(selectedTrack.metadata.description.mediaId, null)
-
-//        mp.setDataSource(requireContext(), selectedTrack.uri)
-//        mp.prepareAsync()
-//
-//        var paused = false
-//        mp.pause()
-
-        binding.apply {
-            songNameTV.text = selectedTrack.name
-            pausePlayButton.setOnClickListener {
-//                if (paused) {
-//                    mp.start()
-//                } else {
-//                    mp.pause()
-//                }
-//                paused = !paused
-            }
+        val updateControls = {
+            val selectedTrack = viewModel.selectedTrack.value!!
+            binding.apply {
+                songNameTV.text = selectedTrack.name
+                pausePlayButton.setOnClickListener {
+                }
 //            seekBar.max = mp.duration / 1000
 //            seekBar.setOnSeekBarChangeListener {
 //                mp.seekTo(seekBar.progress)
 //            }
-
+            }
         }
+
+        viewModel.selectedTrack.observe(viewLifecycleOwner, {updateControls()})
+
 
         return binding.root
     }

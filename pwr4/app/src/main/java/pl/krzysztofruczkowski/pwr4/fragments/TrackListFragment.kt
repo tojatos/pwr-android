@@ -25,6 +25,7 @@ class TrackListFragment : Fragment() {
         val selectAndNavigate = { id: Int ->
             viewModel.selectTrack(id)
             findNavController().navigate(R.id.action_mainFragment_to_trackFragment)
+            requireActivity().mediaController.transportControls.playFromMediaId(viewModel.selectedTrack.value!!.metadata.description.mediaId, null)
         }
 
 

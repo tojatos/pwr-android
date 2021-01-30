@@ -61,31 +61,31 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mMediaBrowser: MediaBrowser
 
-    private val mSubscriptionCallback: SubscriptionCallback = object : SubscriptionCallback() {
-        override fun onChildrenLoaded(parentId: String, children: List<MediaItem>) {
-            onMediaLoaded(children)
-        }
-    }
+//    private val mSubscriptionCallback: SubscriptionCallback = object : SubscriptionCallback() {
+//        override fun onChildrenLoaded(parentId: String, children: List<MediaItem>) {
+//            onMediaLoaded(children)
+//        }
+//    }
 
-    private fun onMediaLoaded(media: List<MediaItem>) {
-        Log.e("T", media.toString())
+//    private fun onMediaLoaded(media: List<MediaItem>) {
+//        Log.e("T", media.toString())
 //        mBrowserAdapter.clear()
 //        mBrowserAdapter.addAll(media)
 //        mBrowserAdapter.notifyDataSetChanged()
-    }
+//    }
 
-    private fun onMediaItemSelected(item: MediaItem) {
-        if (item.isPlayable) {
-            mediaController.transportControls.playFromMediaId(item.mediaId, null)
-        }
-    }
+//    private fun onMediaItemSelected(item: MediaItem) {
+//        if (item.isPlayable) {
+//            mediaController.transportControls.playFromMediaId(item.mediaId, null)
+//        }
+//    }
 
     private val mConnectionCallback: ConnectionCallback = object : ConnectionCallback() {
         override fun onConnected() {
 //            mMediaBrowser.subscribe(mMediaBrowser.root, mSubscriptionCallback)
             mMediaBrowser.sessionToken.also { token ->
                 val mediaController = MediaController(this@MainActivity, token)
-//                mediaController.registerCallback(mMediaControllerCallback)
+                mediaController.registerCallback(mMediaControllerCallback)
                 setMediaController(mediaController)
             }
 //            updatePlaybackState(mediaController.playbackState)
@@ -95,18 +95,18 @@ class MainActivity : AppCompatActivity() {
 
     private val mMediaControllerCallback: MediaController.Callback = object : MediaController.Callback() {
         override fun onMetadataChanged(metadata: MediaMetadata?) {
-//            updateMetadata(metadata)
-//            mBrowserAdapter.notifyDataSetChanged()
+            metadata?.let {
+                val track = MusicLibrary.tracks.find { it.metadata.description.mediaId == metadata.description.mediaId }!!
+                viewModel.selectTrack(track)
+            }
         }
 
         override fun onPlaybackStateChanged(state: PlaybackState?) {
-//            updatePlaybackState(state)
-//            mBrowserAdapter.notifyDataSetChanged()
+            viewModel.updatePlaybackState(state)
         }
 
         override fun onSessionDestroyed() {
-//            updatePlaybackState(null)
-//            mBrowserAdapter.notifyDataSetChanged()
+            viewModel.updatePlaybackState(null)
         }
     }
 
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
     public override fun onStop() {
         super.onStop()
         // (see "stay in sync with the MediaSession")
-//        mediaController?.unregisterCallback(mCont)
+        mediaController?.unregisterCallback(mMediaControllerCallback)
         mMediaBrowser.disconnect()
     }
 

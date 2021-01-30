@@ -24,6 +24,7 @@ class MediaNotificationManager(private val mService: MusicService) : BroadcastRe
     private val mNextAction: Notification.Action
     private val mPrevAction: Notification.Action
     private var mStarted = false
+    val channelId = createNotificationChannel("my_service", "My Background Service")
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
             ACTION_PAUSE -> mService.mCallback.onPause()
@@ -48,7 +49,6 @@ class MediaNotificationManager(private val mService: MusicService) : BroadcastRe
             return
         }
         val isPlaying = state.state == PlaybackState.STATE_PLAYING
-        val channelId = createNotificationChannel("my_service", "My Background Service")
         val notificationBuilder = Notification.Builder(mService, channelId)
         val description = metadata.description
         notificationBuilder
