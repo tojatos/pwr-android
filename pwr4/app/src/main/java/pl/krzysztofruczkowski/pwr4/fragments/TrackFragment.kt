@@ -18,32 +18,33 @@ import pl.krzysztofruczkowski.pwr4.models.Track
 
 class TrackFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mp = MediaPlayer()
-        mp.setOnPreparedListener {
-            mp.start()
-        }
+//        val mp = MediaPlayer()
+//        mp.setOnPreparedListener {
+//            mp.start()
+//        }
         val binding = DataBindingUtil.inflate<FragmentTrackBinding>(inflater, R.layout.fragment_track, container, false)
         val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
 
         val selectedTrack = viewModel.selectedTrack.value!!
+        requireActivity().mediaController.transportControls.playFromMediaId(selectedTrack.metadata.description.mediaId, null)
 
-        mp.setDataSource(requireContext(), selectedTrack.uri)
-        mp.prepareAsync()
-
-        var paused = false
-        mp.pause()
+//        mp.setDataSource(requireContext(), selectedTrack.uri)
+//        mp.prepareAsync()
+//
+//        var paused = false
+//        mp.pause()
 
         binding.apply {
             songNameTV.text = selectedTrack.name
             pausePlayButton.setOnClickListener {
-                if (paused) {
-                    mp.start()
-                } else {
-                    mp.pause()
-                }
-                paused = !paused
+//                if (paused) {
+//                    mp.start()
+//                } else {
+//                    mp.pause()
+//                }
+//                paused = !paused
             }
-            seekBar.max = mp.duration / 1000
+//            seekBar.max = mp.duration / 1000
 //            seekBar.setOnSeekBarChangeListener {
 //                mp.seekTo(seekBar.progress)
 //            }

@@ -2,4 +2,15 @@
     <string name="app_name">Music Player</string>
     <string name="action_open_directory">open directory</string>
     <string name="please_select_a_music_directory">Please select a music directory</string>
+
+    <string name="play_item">Play item</string>
+    <string name="play_pause">play or pause</string>
+    <string name="currently_playing_song">Song currently playing</string>
+    <string name="currently_playing_artist">Artist of currently playing song</string>
+    <string name="currently_playing_extra_info">Extra info for currently playing song</string>
+
+    <string name="label_pause">Pause</string>
+    <string name="label_play">Play</string>
+    <string name="label_previous">Previous</string>
+    <string name="label_next">Next</string>
 </resources>
