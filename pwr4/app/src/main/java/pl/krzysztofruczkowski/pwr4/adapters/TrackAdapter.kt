@@ -13,12 +13,10 @@ class TrackAdapter(
     inner class ViewHolder(val binding: ItemTrackBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = items[position]
-//            val imageId = getImageIdByName(pokemon.name.toLowerCase(Locale.ROOT), activity)
             binding.apply {
                 itemTrackName.text = item.name
                 itemTrackName.isSelected = true // needed to enable marquee
                 itemTrack.setOnClickListener { onItemClick(position) }
-//                itemPokemonImage.setImageResource(imageId)
             }
         }
     }

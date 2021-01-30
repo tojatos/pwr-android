@@ -61,34 +61,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mMediaBrowser: MediaBrowser
 
-//    private val mSubscriptionCallback: SubscriptionCallback = object : SubscriptionCallback() {
-//        override fun onChildrenLoaded(parentId: String, children: List<MediaItem>) {
-//            onMediaLoaded(children)
-//        }
-//    }
-
-//    private fun onMediaLoaded(media: List<MediaItem>) {
-//        Log.e("T", media.toString())
-//        mBrowserAdapter.clear()
-//        mBrowserAdapter.addAll(media)
-//        mBrowserAdapter.notifyDataSetChanged()
-//    }
-
-//    private fun onMediaItemSelected(item: MediaItem) {
-//        if (item.isPlayable) {
-//            mediaController.transportControls.playFromMediaId(item.mediaId, null)
-//        }
-//    }
 
     private val mConnectionCallback: ConnectionCallback = object : ConnectionCallback() {
         override fun onConnected() {
-//            mMediaBrowser.subscribe(mMediaBrowser.root, mSubscriptionCallback)
             mMediaBrowser.sessionToken.also { token ->
                 val mediaController = MediaController(this@MainActivity, token)
                 mediaController.registerCallback(mMediaControllerCallback)
                 setMediaController(mediaController)
             }
-//            updatePlaybackState(mediaController.playbackState)
+//            viewModel.updatePlaybackState(mediaController.playbackState)
 //            updateMetadata(mediaController.metadata)
         }
     }
@@ -149,7 +130,6 @@ class MainActivity : AppCompatActivity() {
                     putString(MediaMetadata.METADATA_KEY_MEDIA_ID, f.uri.path.toString())
                     putString(MediaMetadata.METADATA_KEY_TITLE, f.name)
                     putLong(MediaMetadata.METADATA_KEY_DURATION, r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)!!.toLong())
-//                    putString(MediaMetadata.METADATA_KEY_DURATION, r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION))
                 }
                 val metadata = builder.build()
 //                Log.e(f.name, r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toString())

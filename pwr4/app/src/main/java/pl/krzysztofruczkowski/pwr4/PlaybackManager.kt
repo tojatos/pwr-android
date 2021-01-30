@@ -47,9 +47,6 @@ class PlaybackManager(private val mContext: Context, callback: Callback?) : OnAu
 //            currentMedia = metadata
             currentTrack = MusicLibrary.tracks.find { it.metadata.description.mediaId == mediaId }
             try {
-                //TODO
-//                mMediaPlayer!!.setDataSource(mContext.applicationContext,
-//                        Uri.parse(MusicLibrary.getSongUri(mediaId)))
                 mMediaPlayer!!.setDataSource(mContext.applicationContext, currentTrack!!.uri)
                 mMediaPlayer!!.prepare()
             } catch (e: IOException) {
@@ -78,10 +75,15 @@ class PlaybackManager(private val mContext: Context, callback: Callback?) : OnAu
     fun stop() {
         mState = PlaybackState.STATE_STOPPED
         updatePlaybackState()
+//        mMediaPlayer?.stop()
         // Give up Audio focus
         mAudioManager.abandonAudioFocus(this)
         // Relax all resources
         releaseMediaPlayer()
+    }
+
+    fun seekTo(pos: Long) {
+        mMediaPlayer?.seekTo(pos.toInt())
     }
 
     /**

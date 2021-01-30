@@ -9,13 +9,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaMetadata
 import android.media.session.MediaSession
 import android.media.session.PlaybackState
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
+
 
 class MediaNotificationManager(private val mService: MusicService) : BroadcastReceiver() {
     private val mNotificationManager: NotificationManager
@@ -34,7 +35,7 @@ class MediaNotificationManager(private val mService: MusicService) : BroadcastRe
         }
     }
 
-    fun update(metadata: MediaMetadata?, state: PlaybackState?, token: MediaSession.Token?) {
+    fun update(context: Context, metadata: MediaMetadata?, state: PlaybackState?, token: MediaSession.Token?) {
         if (state == null || state.state == PlaybackState.STATE_STOPPED || state.state == PlaybackState.STATE_NONE) {
             mService.stopForeground(true)
             try {
@@ -51,17 +52,18 @@ class MediaNotificationManager(private val mService: MusicService) : BroadcastRe
         val isPlaying = state.state == PlaybackState.STATE_PLAYING
         val notificationBuilder = Notification.Builder(mService, channelId)
         val description = metadata.description
+//        val largeIcon = BitmapFactory.decodeResource(context.resources, R.drawable.ic_baseline_audiotrack_24)
         notificationBuilder
                 .setStyle(MediaStyle()
                         .setMediaSession(token)
                         .setShowActionsInCompactView(0, 1, 2))
-                .setColor(Color.BLACK)
+                .setColor(Color.WHITE)
                 .setSmallIcon(R.drawable.ic_baseline_audiotrack_24)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setContentIntent(createContentIntent())
                 .setContentTitle(description.title)
                 .setContentText(description.subtitle)
-//                .setLargeIcon(MusicLibrary.getAlbumBitmap(mService, description.mediaId))
+//                .setLargeIcon(largeIcon)
                 .setOngoing(isPlaying)
                 .setWhen(if (isPlaying) System.currentTimeMillis() - state.position else 0)
                 .setShowWhen(isPlaying)

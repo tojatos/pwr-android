@@ -29,7 +29,8 @@ class MusicService : MediaBrowserService() {
         }
 
         override fun onStop() {
-            stopSelf()
+            mPlayback.stop()
+//            stopSelf()
         }
 
         override fun onSkipToNext() {
@@ -38,6 +39,10 @@ class MusicService : MediaBrowserService() {
 
         override fun onSkipToPrevious() {
             onPlayFromMediaId(MusicLibrary.getPreviousSong(mPlayback.currentMediaId!!), null)
+        }
+
+        override fun onSeekTo(pos: Long) {
+            mPlayback.seekTo(pos)
         }
     }
 
@@ -50,14 +55,14 @@ class MusicService : MediaBrowserService() {
                     MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS)
             setSessionToken(sessionToken)
             setCallback(mCallback)
-            stateBuilder = PlaybackState.Builder().setActions(PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PLAY_PAUSE)
-            setPlaybackState(stateBuilder.build())
+//            stateBuilder = PlaybackState.Builder().setActions(PlaybackState.ACTION_PLAY or PlaybackState.ACTION_PLAY_PAUSE)
+//            setPlaybackState(stateBuilder.build())
         }
         val mediaNotificationManager = MediaNotificationManager(this)
         mPlayback = PlaybackManager(this, object : PlaybackManager.Callback {
             override fun onPlaybackStatusChanged(state: PlaybackState?) {
                 mSession!!.setPlaybackState(state)
-                mediaNotificationManager.update(mPlayback.currentMedia, state, sessionToken)
+                mediaNotificationManager.update(applicationContext, mPlayback.currentMedia, state, sessionToken)
             }
         })
     }

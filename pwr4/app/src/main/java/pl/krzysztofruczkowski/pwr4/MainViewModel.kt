@@ -23,19 +23,6 @@ class MainViewModel(application: Application) :AndroidViewModel(application) {
     fun updateTracks(tracks: List<Track>) {
         _tracks.value = tracks as ArrayList<Track>
         MusicLibrary.tracks = tracks
-//        Log.e("TAG", _tracks.value.toString())
-
-//        tracks.toList().forEach {
-//            try {
-//                val r = MediaMetadataRetriever()
-//                r.setDataSource(getApplication(), it.uri)
-//                val metadata = r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-//                Log.e(it.name, metadata.orEmpty())
-//            } catch (e: Exception) {
-//                Log.e("EXCEPT", e.message.orEmpty())
-//            }
-//        }
-
     }
 
     fun selectTrack(position: Int) {
