@@ -11,7 +11,10 @@
 <div>
 
 * pwr3: Aplikacja BMI z bazą danych Room
-* pwr4: Music player
+* pwr4: Aplikacja do odtwarzania muzyki z notyfikacją i serwisem
+
+<img src="../assets/pwr4/android_music_player.gif?raw=true" width="300"/>
+
 * pwr5: Aplikacja do walidowania numeru PESEL we Flutterze
 
 <div style="display: inline-block">
